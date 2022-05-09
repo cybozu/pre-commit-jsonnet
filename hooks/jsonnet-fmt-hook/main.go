@@ -35,7 +35,7 @@ func (e *FmtError) Error() string {
 		return fmt.Sprintf("exit-code=%d, args=%v\n%s", e.exitCode, e.args, stderr)
 	}
 
-	return fmt.Sprintf("exit-code=%d, args=%v\n%s\n", e.exitCode, e.args, e.diff)
+	return fmt.Sprintf("exit-code=%d, args=%v\n%s\n", e.exitCode, e.args, strings.TrimSpace(e.diff))
 }
 
 func hasTestOpt(opts []string) bool {
