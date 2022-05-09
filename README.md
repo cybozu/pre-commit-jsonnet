@@ -1,8 +1,11 @@
 # pre-commit-jsonnet
 `jsonnet-lint`, `jsonnetfmt` を実行する pre-commit hooks
 
+[![Tests](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/tests.yml/badge.svg)](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/tests.yml)
 
 ## Usage
+
+### 設定
 pre-commit hooks を適用したいリポジトリの `.pre-commit-config.yaml` に以下のような記載を追加する:
 
 ```yaml
@@ -17,3 +20,10 @@ repos:
 ```
 
 `rev` は `pre-commit autoupdate` を実行することで最新の commit hash に更新出来る。
+
+### Install hooks
+`.pre-commit-config.yaml` を配置したリポジトリで以下を実行する:
+
+```
+pre-commit install
+```
