@@ -54,6 +54,11 @@ func TestParseArgs(t *testing.T) {
 			wantOpts:  []string{"-i"},
 			wantFiles: append([]string{existFile}, jsonnetFiles...),
 		},
+		{
+			args:      append([]string{"--test", "--string-style", "l"}, jsonnetFiles...),
+			wantOpts:  []string{"--test", "--string-style", "l"},
+			wantFiles: jsonnetFiles,
+		},
 	}
 
 	for _, param := range params {

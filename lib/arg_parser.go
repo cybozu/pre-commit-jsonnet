@@ -19,7 +19,7 @@ func ParseArgs(args []string) (opts, files []string) {
 		fi, err := os.Stat(arg)
 		fileNotFound := errors.Is(err, os.ErrNotExist)
 
-		if foundOpt && (fileNotFound || fi.IsDir()) {
+		if foundOpt && !canOpt(arg) && (fileNotFound || fi.IsDir()) {
 			opts = append(opts, arg)
 			foundOpt = false
 			continue
