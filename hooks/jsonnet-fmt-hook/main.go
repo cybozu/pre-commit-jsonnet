@@ -123,10 +123,10 @@ func main() {
 	results := make(chan CmdResult, len(files))
 
 	for _, f := range files {
-		go func() {
+		go func(f string) {
 			err := execJsonnetFmt(f, opts)
 			results <- CmdResult{err: err}
-		}()
+		}(f)
 	}
 
 	for i := 0; i < len(files); i++ {
