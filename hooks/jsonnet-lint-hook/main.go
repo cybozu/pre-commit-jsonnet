@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"golang.org/x/sys/execabs"
 
@@ -23,7 +24,7 @@ type LintError struct {
 }
 
 func (e *LintError) Error() string {
-	return fmt.Sprintf("args=%v\n%s", e.args, e.stderr)
+	return fmt.Sprintf("args=%v\n%s", e.args, strings.TrimSpace(e.stderr))
 }
 
 func execJsonnetLint(f string, opts []string) error {

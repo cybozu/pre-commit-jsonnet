@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"io/ioutil"
 
@@ -28,8 +29,10 @@ type FmtError struct {
 }
 
 func (e *FmtError) Error() string {
-	if e.stderr != "" {
-		return fmt.Sprintf("exit-code=%d, args=%v\n%s", e.exitCode, e.args, e.stderr)
+	stderr := strings.TrimSpace(e.stderr)
+
+	if stderr != "" {
+		return fmt.Sprintf("exit-code=%d, args=%v\n%s", e.exitCode, e.args, stderr)
 	}
 
 	return fmt.Sprintf("exit-code=%d, args=%v\n%s\n", e.exitCode, e.args, e.diff)
