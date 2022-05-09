@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sync"
 
 	"io/ioutil"
 
@@ -121,20 +120,17 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	var wg sync.WaitGroup
 	results := make(chan CmdResult, len(files))
 
 	for _, f := range files {
-		wg.Add(1)
 		go func() {
-			defer wg.Done()
 			err := execJsonnetFmt(f, opts)
 			results <- CmdResult{err: err}
 		}()
 	}
-	wg.Wait()
 
-	for result := range results {
+	for i := 0; i < len(files); i++ {
+		result := <-results
 		if result.err == nil {
 			continue
 		}
