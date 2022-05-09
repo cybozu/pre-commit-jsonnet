@@ -13,6 +13,10 @@ import (
 
 const JSONNET_LINT_CMD = "jsonnet-lint"
 
+type CmdResult struct {
+	err error
+}
+
 type LintError struct {
 	args   []string
 	stderr string
@@ -41,18 +45,30 @@ func execJsonnetLint(f string, opts []string) error {
 
 func main() {
 	opts, files := lib.ParseArgs(os.Args[1:])
-	errExit := false
 
 	if _, err := execabs.LookPath(JSONNET_LINT_CMD); err != nil {
 		log.Fatalln(err)
 	}
 
+	results := make(chan CmdResult, len(files))
+
 	for _, f := range files {
-		err := execJsonnetLint(f, opts)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "[ERROR] lint failed: %s\n", err)
-			errExit = true
+		go func(f string) {
+
+			err := execJsonnetLint(f, opts)
+			results <- CmdResult{err: err}
+		}(f)
+	}
+
+	errExit := false
+	for i := 0; i < len(files); i++ {
+		result := <-results
+		if result.err == nil {
+			continue
 		}
+
+		fmt.Fprintf(os.Stderr, "[ERROR] lint failed: %s\n", result.err)
+		errExit = true
 	}
 
 	if errExit {
