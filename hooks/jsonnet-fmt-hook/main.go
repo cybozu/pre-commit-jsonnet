@@ -16,15 +16,15 @@ import (
 
 const JSONNET_FMT_CMD = "jsonnetfmt"
 
+type CmdResult struct {
+	err error
+}
+
 type FmtError struct {
 	args     []string
 	diff     string
 	exitCode int
 	stderr   string
-}
-
-type CmdResult struct {
-	err error
 }
 
 func (e *FmtError) Error() string {
@@ -114,7 +114,6 @@ func execJsonnetFmt(f string, opts []string) error {
 
 func main() {
 	opts, files := lib.ParseArgs(os.Args[1:])
-	errExit := false
 
 	if _, err := execabs.LookPath(JSONNET_FMT_CMD); err != nil {
 		log.Fatalln(err)
@@ -129,6 +128,7 @@ func main() {
 		}(f)
 	}
 
+	errExit := false
 	for i := 0; i < len(files); i++ {
 		result := <-results
 		if result.err == nil {
