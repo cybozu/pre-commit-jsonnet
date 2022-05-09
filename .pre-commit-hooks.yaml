@@ -1,0 +1,13 @@
+- id: jsonnet-lint
+  name: jsonnet-lint hook
+  description: "Run jsonnet-lint to jsonnet files"
+  entry: jsonnet-lint-hook
+  language: golang
+  types: ["file", "jsonnet"]
+
+- id: jsonnet-fmt
+  name: jsonnet-fmt hook
+  description: "Run jsonnetfmt to jsonnet files"
+  entry: jsonnet-fmt-hook
+  language: golang
+  types: ["file", "jsonnet"]

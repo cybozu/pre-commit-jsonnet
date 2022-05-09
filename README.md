@@ -1,2 +1,10 @@
 # pre-commit-jsonnet
-Jsonnet hooks for pre-commit
+
+## Usage
+
+`.pre-commit-config.yaml`:
+
+```yaml
+```
+
+

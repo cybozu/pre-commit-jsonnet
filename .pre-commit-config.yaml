@@ -1,0 +1,8 @@
+repos:
+    - repo: https://github.com/cybozu-private/pre-commit-jsonnet
+      rev: HEAD
+      hooks:
+          - id: jsonnet-fmt
+            args: ["--test"]
+          - id: jsonnet-lint
+            args: ["--jpath", "lib/"]
