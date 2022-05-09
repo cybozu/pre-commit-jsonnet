@@ -14,23 +14,6 @@ const (
 	existFile = "arg_parser.go"
 )
 
-/*
-func TestMain(m *testing.M) {
-	tempDir, err := os.MkdirTemp("", "testdir")
-	if err != nil {
-		m.Fatal(err)
-	}
-	defer os.RemoveAll(tempDir)
-
-	file := filepath.Join(tempDir, jsonnetFileName1)
-	if err := os.WriteFile(file, []byte("{}"), 0666); err != nil {
-		log.Fatal(err)
-	}
-
-	os.Exit(m.Run())
-}
-*/
-
 func TestParseArgs(t *testing.T) {
 	tempDir, teardown := testutil.PrepareTestDir(t)
 	defer teardown()
