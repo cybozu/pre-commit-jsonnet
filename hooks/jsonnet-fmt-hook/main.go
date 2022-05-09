@@ -80,8 +80,6 @@ func diffJsonnetFmt(f string) (string, error) {
 func execJsonnetFmt(f string, opts []string) error {
 	var stdout, stderr bytes.Buffer
 
-	isTest := hasTestOpt(opts)
-
 	args := []string{}
 	args = append(args, opts...)
 	args = append(args, "--")
@@ -101,7 +99,7 @@ func execJsonnetFmt(f string, opts []string) error {
 		stderr:   stderr.String(),
 	}
 
-	if isTest {
+	if hasTestOpt(opts) {
 		diff, diffErr := diffJsonnetFmt(f)
 		if diffErr != nil {
 			return fmtError
