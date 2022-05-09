@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+func canOpt(arg string) bool {
+	return strings.HasPrefix(arg, "-")
+}
+
 // ParseArgs split arguments into options and files
 func ParseArgs(args []string) (opts, files []string) {
 	foundOpt := false
@@ -23,7 +27,7 @@ func ParseArgs(args []string) (opts, files []string) {
 
 		foundOpt = false
 
-		if strings.HasPrefix(arg, "-") && fileNotFound {
+		if canOpt(arg) && fileNotFound {
 			foundOpt = true
 			opts = append(opts, arg)
 			continue
