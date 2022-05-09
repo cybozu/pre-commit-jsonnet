@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	"io/ioutil"
 
@@ -21,6 +22,10 @@ type FmtError struct {
 	diff     string
 	exitCode int
 	stderr   string
+}
+
+type CmdResult struct {
+	err error
 }
 
 func (e *FmtError) Error() string {
@@ -116,12 +121,26 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	var wg sync.WaitGroup
+	results := make(chan CmdResult, len(files))
+
 	for _, f := range files {
-		err := execJsonnetFmt(f, opts)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "[ERROR] malformed jsonnet found: %s: %s\n", f, err)
-			errExit = true
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			err := execJsonnetFmt(f, opts)
+			results <- CmdResult{err: err}
+		}()
+	}
+	wg.Wait()
+
+	for result := range results {
+		if result.err == nil {
+			continue
 		}
+
+		fmt.Fprintf(os.Stderr, "[ERROR] malformed jsonnet found: %s\n", result.err)
+		errExit = true
 	}
 
 	if errExit {
