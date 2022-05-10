@@ -63,7 +63,7 @@ func hasTestOpt(opts []string) bool {
 	return false
 }
 
-func toSummary(diffs []diffmatchpatch.Diff) *Diff {
+func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
 	var builder strings.Builder
 	var err error
 	var lastLineBreak bool
@@ -171,7 +171,7 @@ func diffJsonnetFmt(f string) (*Diff, error) {
 	dmp := diffmatchpatch.New()
 	diffs := dmp.DiffMain(after, before, false)
 
-	return toSummary(diffs), err
+	return summarizeDiff(diffs), err
 }
 
 func execJsonnetFmt(f string, opts []string) error {
