@@ -62,9 +62,9 @@ func TestDiffJsonnetFmt(t *testing.T) {
 			//t.Errorf("param=%q, wantDiff=%v, %s", paam, err)
 		}
 
-		if param.wantDiff && len(diff) > 0 {
+		if param.wantDiff && diff != nil && len(diff.text) > 0 {
 			continue
-		} else if !param.wantDiff && len(diff) == 0 {
+		} else if !param.wantDiff && diff == nil {
 			continue
 		}
 
