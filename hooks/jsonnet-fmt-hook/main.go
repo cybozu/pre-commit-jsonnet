@@ -198,8 +198,8 @@ func execJsonnetFmt(f string, opts []string) error {
 	}
 
 	if hasTestOpt(opts) {
-		diff, diffErr := diffJsonnetFmt(f)
-		if diffErr != nil {
+		diff, err := diffJsonnetFmt(f)
+		if err != nil {
 			return fmtError
 		}
 		fmtError.diff = diff
