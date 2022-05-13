@@ -75,12 +75,6 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
 			log.Fatalln(err)
 		}
 	}
-	min := func(x, y int) int {
-		if x < y {
-			return x
-		}
-		return y
-	}
 	splitLines := func(text string) []string {
 		return strings.Split(strings.TrimSpace(strings.ReplaceAll(text, "\r\n", "\n")), "\n")
 	}
