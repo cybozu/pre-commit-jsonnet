@@ -10,7 +10,7 @@ func canOpt(arg string) bool {
 	return strings.HasPrefix(arg, "-")
 }
 
-// ParseArgs split arguments into options and files
+// ParseArgs split arguments into options and file paths
 func ParseArgs(args []string) (opts, files []string) {
 	foundOpt := false
 
