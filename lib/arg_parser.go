@@ -9,7 +9,7 @@ import (
 
 var reOpt = regexp.MustCompile("^--[a-z][-a-z]*|^-[a-zA-Z]$")
 
-func canOpt(arg string) bool {
+func inferOpt(arg string) bool {
 	return reOpt.MatchString(arg)
 }
 
@@ -22,7 +22,7 @@ func ParseArgs(args []string) (opts, files []string) {
 		fi, err := os.Stat(arg)
 		fileNotFound := errors.Is(err, os.ErrNotExist)
 
-		if foundOpt && !canOpt(arg) && (fileNotFound || fi.IsDir()) {
+		if foundOpt && !inferOpt(arg) && (fileNotFound || fi.IsDir()) {
 			opts = append(opts, arg)
 			foundOpt = false
 			continue
@@ -30,7 +30,7 @@ func ParseArgs(args []string) (opts, files []string) {
 
 		foundOpt = false
 
-		if canOpt(arg) && fileNotFound {
+		if inferOpt(arg) && fileNotFound {
 			foundOpt = true
 			opts = append(opts, arg)
 			continue
