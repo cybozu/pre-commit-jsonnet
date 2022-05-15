@@ -171,7 +171,7 @@ func diffJsonnetFmt(f string) (*Diff, error) {
 func execJsonnetFmt(f string, opts []string) error {
 	var stdout, stderr bytes.Buffer
 
-	args := []string{}
+	args := make([]string, 0, len(opts)+2)
 	args = append(args, opts...)
 	args = append(args, "--")
 	args = append(args, f)
