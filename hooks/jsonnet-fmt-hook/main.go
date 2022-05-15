@@ -26,7 +26,7 @@ type CmdResult struct {
 	err error
 }
 
-type Diff struct {
+type FileDiff struct {
 	text      string
 	numInsert int
 	numDelete int
@@ -35,7 +35,7 @@ type Diff struct {
 type FmtError struct {
 	path     string
 	args     []string
-	diff     *Diff
+	diff     *FileDiff
 	exitCode int
 	stderr   string
 }
@@ -63,11 +63,11 @@ func hasTestOpt(opts []string) bool {
 	return false
 }
 
-func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
+func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 	var builder strings.Builder
 	var err error
 	var lastLineBreak bool
-	var fileDiff Diff
+	var fileDiff FileDiff
 
 	writeString := func(builder *strings.Builder, s string) {
 		_, err = builder.WriteString(s)
@@ -135,7 +135,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
 	return &fileDiff
 }
 
-func diffJsonnetFmt(f string) (*Diff, error) {
+func diffJsonnetFmt(f string) (*FileDiff, error) {
 	var stdout, stderr bytes.Buffer
 
 	cmd := execabs.Command(jsonnetFmtCmd, f)
