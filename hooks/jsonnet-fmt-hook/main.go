@@ -15,11 +15,11 @@ import (
 	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
-const JSONNET_FMT_CMD = "jsonnetfmt"
+const jsonnetFmtCmd = "jsonnetfmt"
 const (
-	ANSI_RESET = "\x1b[0m"
-	ANSI_RED   = "\x1b[31m"
-	ANSI_GREEN = "\x1b[32m"
+	ansiReset = "\x1b[0m"
+	ansiRed   = "\x1b[31m"
+	ansiGreen = "\x1b[32m"
 )
 
 type CmdResult struct {
@@ -47,8 +47,8 @@ func (e *FmtError) Error() string {
 		return fmt.Sprintf("path=%s exit-code=%d\n%s", e.path, e.exitCode, stderr)
 	}
 
-	insert := fmt.Sprintf("%s+%d%s", ANSI_GREEN, e.diff.numInsert, ANSI_RESET)
-	delete := fmt.Sprintf("%s-%d%s", ANSI_RED, e.diff.numDelete, ANSI_RESET)
+	insert := fmt.Sprintf("%s+%d%s", ansiGreen, e.diff.numInsert, ansiReset)
+	delete := fmt.Sprintf("%s-%d%s", ansiRed, e.diff.numDelete, ansiReset)
 
 	return fmt.Sprintf("path=%s (%s %s), exit-code=%d\n%s\n", e.path, insert, delete, e.exitCode, strings.TrimSpace(e.diff.text))
 }
@@ -85,10 +85,10 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
 
 		switch diff.Type {
 		case diffmatchpatch.DiffInsert:
-			writeString(&builder, ANSI_GREEN+text+ANSI_RESET)
+			writeString(&builder, ansiGreen+text+ansiReset)
 			fileDiff.numInsert += len(text)
 		case diffmatchpatch.DiffDelete:
-			writeString(&builder, ANSI_RED+text+ANSI_RESET)
+			writeString(&builder, ansiRed+text+ansiReset)
 			fileDiff.numDelete += len(text)
 		case diffmatchpatch.DiffEqual:
 			var showHead, showTail bool
@@ -138,7 +138,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *Diff {
 func diffJsonnetFmt(f string) (*Diff, error) {
 	var stdout, stderr bytes.Buffer
 
-	cmd := execabs.Command(JSONNET_FMT_CMD, f)
+	cmd := execabs.Command(jsonnetFmtCmd, f)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	if err := cmd.Run(); err != nil {
@@ -176,7 +176,7 @@ func execJsonnetFmt(f string, opts []string) error {
 	args = append(args, "--")
 	args = append(args, f)
 
-	cmd := execabs.Command(JSONNET_FMT_CMD, args...)
+	cmd := execabs.Command(jsonnetFmtCmd, args...)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 
@@ -205,7 +205,7 @@ func execJsonnetFmt(f string, opts []string) error {
 func main() {
 	opts, files := lib.ParseArgs(os.Args[1:])
 
-	if _, err := execabs.LookPath(JSONNET_FMT_CMD); err != nil {
+	if _, err := execabs.LookPath(jsonnetFmtCmd); err != nil {
 		log.Fatalln(err)
 	}
 
