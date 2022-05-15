@@ -3,11 +3,14 @@ package lib
 import (
 	"errors"
 	"os"
+	"regexp"
 	"strings"
 )
 
+var reOpt = regexp.MustCompile("^--[a-z][-a-z]*|^-[a-zA-Z]$")
+
 func canOpt(arg string) bool {
-	return strings.HasPrefix(arg, "-")
+	return reOpt.MatchString(arg)
 }
 
 // ParseArgs split arguments into options and file paths
