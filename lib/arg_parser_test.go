@@ -14,6 +14,42 @@ const (
 	existFile = "arg_parser.go"
 )
 
+func TestInferOpt(t *testing.T) {
+	params := []struct {
+		arg  string
+		want bool
+	}{
+		{
+			arg:  "-i",
+			want: true,
+		},
+		{
+			arg:  "-V",
+			want: true,
+		},
+		{
+			arg:  "--jpath",
+			want: true,
+		},
+		{
+			arg:  "i",
+			want: false,
+		},
+		{
+			arg:  "jpath",
+			want: false,
+		},
+	}
+
+	for _, param := range params {
+		got := inferOpt(param.arg)
+
+		if got != param.want {
+			t.Errorf("arg='%q', want=%v, got=%v", param.arg, param.want, got)
+		}
+	}
+}
+
 func TestParseArgs(t *testing.T) {
 	tempDir, teardown := testutil.PrepareTestDir(t)
 	defer teardown()
