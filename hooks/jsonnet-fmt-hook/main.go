@@ -177,8 +177,7 @@ func execJsonnetFmt(f string, opts []string) error {
 
 	args := make([]string, 0, len(opts)+2)
 	args = append(args, opts...)
-	args = append(args, "--")
-	args = append(args, f)
+	args = append(args, []string{"--", f}...)
 
 	cmd := execabs.Command(jsonnetFmtCmd, args...)
 	cmd.Stderr = &stderr
