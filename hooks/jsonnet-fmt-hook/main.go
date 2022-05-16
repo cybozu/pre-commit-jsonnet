@@ -79,6 +79,9 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 		return strings.Split(strings.TrimSpace(strings.ReplaceAll(text, "\r\n", "\n")), "\n")
 	}
 
+	const maxShowLine = 3
+	const omissionText = "...\n"
+
 	for i, diff := range diffs {
 		text := diff.Text
 		lines := splitLines(text)
@@ -93,7 +96,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 		case diffmatchpatch.DiffEqual:
 			var showHead, showTail bool
 			lastLineBreak = text[len(text)-1:] == "\n"
-			partLines := min(3, len(lines))
+			partLines := min(maxShowLine, len(lines))
 
 			if i == 0 {
 				showTail = true
@@ -120,11 +123,11 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 				if partText[len(partText)-1:] != "\n" {
 					writeString(&builder, "\n")
 				}
-				writeString(&builder, "..."+"\n")
+				writeString(&builder, omissionText)
 			}
 			if showTail {
 				if !showHead && !lastLineBreak {
-					writeString(&builder, "..."+"\n")
+					writeString(&builder, omissionText)
 				}
 				writeString(&builder, strings.Join(lines[len(lines)-partLines:], "\n"))
 			}
