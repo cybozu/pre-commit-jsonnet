@@ -40,7 +40,7 @@ type FmtError struct {
 	stderr   string
 }
 
-func (e *FmtError) Error() string {
+func (e FmtError) Error() string {
 	stderr := strings.TrimSpace(e.stderr)
 
 	if stderr != "" || e.diff == nil {
