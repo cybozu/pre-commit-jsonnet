@@ -12,7 +12,7 @@ import (
 	"github.com/cybozu-private/pre-commit-jsonnet/lib"
 )
 
-const JSONNET_LINT_CMD = "jsonnet-lint"
+const jsonnetLintCmd = "jsonnet-lint"
 
 type CmdResult struct {
 	err error
@@ -34,7 +34,7 @@ func execJsonnetLint(f string, opts []string) error {
 	args = append(args, opts...)
 	args = append(args, "--")
 	args = append(args, f)
-	cmd := execabs.Command(JSONNET_LINT_CMD, args...)
+	cmd := execabs.Command(jsonnetLintCmd, args...)
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
@@ -47,7 +47,7 @@ func execJsonnetLint(f string, opts []string) error {
 func main() {
 	opts, files := lib.ParseArgs(os.Args[1:])
 
-	if _, err := execabs.LookPath(JSONNET_LINT_CMD); err != nil {
+	if _, err := execabs.LookPath(jsonnetLintCmd); err != nil {
 		log.Fatalln(err)
 	}
 
