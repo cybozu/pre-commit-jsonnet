@@ -28,9 +28,9 @@ func (e *LintError) Error() string {
 }
 
 func execJsonnetLint(f string, opts []string) error {
-	var args []string
 	var stderr bytes.Buffer
 
+	args := make([]string, 0, len(opts)+2)
 	args = append(args, opts...)
 	args = append(args, "--")
 	args = append(args, f)
