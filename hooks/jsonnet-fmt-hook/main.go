@@ -66,7 +66,7 @@ func hasTestOpt(opts []string) bool {
 func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 	var builder strings.Builder
 	var err error
-	var lastLineBreak bool
+	var endWithLineBreak bool
 	var fileDiff FileDiff
 
 	writeString := func(builder *strings.Builder, s string) {
@@ -96,7 +96,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 			fileDiff.numDelete += len(text)
 		case diffmatchpatch.DiffEqual:
 			var showHead, showTail bool
-			lastLineBreak = text[len(text)-1:] == "\n"
+			endWithLineBreak = text[len(text)-1:] == "\n"
 			writeLineCount := min(maxShowLine, len(lines))
 
 			if i == 0 {
@@ -127,7 +127,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 				writeString(&builder, omissionText)
 			}
 			if showTail {
-				if !showHead && !lastLineBreak {
+				if !showHead && !endWithLineBreak {
 					writeString(&builder, omissionText)
 				}
 				writeString(&builder, strings.Join(lines[len(lines)-writeLineCount:], "\n"))
