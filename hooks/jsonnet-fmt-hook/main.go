@@ -97,7 +97,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 		case diffmatchpatch.DiffEqual:
 			var showHead, showTail bool
 			lastLineBreak = text[len(text)-1:] == "\n"
-			partLines := min(maxShowLine, len(lines))
+			writeLineCount := min(maxShowLine, len(lines))
 
 			if i == 0 {
 				showTail = true
@@ -108,18 +108,18 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 				showHead = true
 			}
 
-			if showHead && showTail && len(lines) <= partLines*2 {
+			if showHead && showTail && len(lines) <= writeLineCount*2 {
 				writeString(&builder, text)
 				continue
 			}
 
-			if (showHead || showTail) && len(lines) <= partLines {
+			if (showHead || showTail) && len(lines) <= writeLineCount {
 				writeString(&builder, text)
 				continue
 			}
 
 			if showHead {
-				partText := strings.Join(lines[:partLines], "\n")
+				partText := strings.Join(lines[:writeLineCount], "\n")
 				writeString(&builder, partText)
 				if partText[len(partText)-1:] != "\n" {
 					writeString(&builder, "\n")
@@ -130,7 +130,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 				if !showHead && !lastLineBreak {
 					writeString(&builder, omissionText)
 				}
-				writeString(&builder, strings.Join(lines[len(lines)-partLines:], "\n"))
+				writeString(&builder, strings.Join(lines[len(lines)-writeLineCount:], "\n"))
 			}
 		}
 	}
