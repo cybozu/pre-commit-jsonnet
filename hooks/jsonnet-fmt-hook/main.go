@@ -81,6 +81,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 
 	const maxShowLine = 3
 	const omissionText = "...\n"
+	lastDiffIdx := len(diffs) - 1
 
 	for i, diff := range diffs {
 		text := diff.Text
@@ -100,7 +101,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 
 			if i == 0 {
 				showTail = true
-			} else if i == (len(diffs) - 1) {
+			} else if i == lastDiffIdx {
 				showHead = true
 			} else {
 				showTail = true
