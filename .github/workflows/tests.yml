@@ -1,4 +1,4 @@
-name: Tests
+name: Run lint and tests
 
 on:
   pull_request:
@@ -20,6 +20,9 @@ jobs:
 
       - name: Setup
         run: make setup
+
+      - name: Run lint
+        run: make lint
 
       - name: Run tests
         run: make test
