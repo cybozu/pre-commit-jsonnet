@@ -1,11 +1,12 @@
 # pre-commit-jsonnet
+[![lint and tests](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/lint_and_tests.yml/badge.svg)](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/lint_and_tests.yml)
+
 `jsonnet-lint`, `jsonnetfmt` を実行する pre-commit hooks
 
-[![Tests](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/tests.yml/badge.svg)](https://github.com/cybozu-private/pre-commit-jsonnet/actions/workflows/tests.yml)
 
 ## Usage
 
-### 設定
+### Configurations
 pre-commit hooks を適用したいリポジトリの `.pre-commit-config.yaml` に以下のような記載を追加する:
 
 ```yaml
