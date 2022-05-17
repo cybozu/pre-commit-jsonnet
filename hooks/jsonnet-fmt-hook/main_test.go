@@ -2,10 +2,24 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/cybozu-private/pre-commit-jsonnet/testutil"
 )
+
+var reAnsiEscape = regexp.MustCompile(`(?:\x1B[@-Z\\-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])`)
+
+func normalizeDiff(diff string) string {
+	reSpaces := regexp.MustCompile(`\s+`)
+
+	normDiff := strings.TrimSpace(diff)
+	normDiff = reSpaces.ReplaceAllString(normDiff, " ")
+	normDiff = reAnsiEscape.ReplaceAllString(normDiff, "")
+	return strings.ToLower(normDiff)
+}
 
 func TestHasTestOpt(t *testing.T) {
 	params := []struct {
@@ -59,7 +73,7 @@ func TestDiffJsonnetFmt(t *testing.T) {
 		diff, err := diffJsonnetFmt(param.f)
 		if err != nil {
 			t.Errorf("param=%v, err=%s\n", param, err)
-			//t.Errorf("param=%q, wantDiff=%v, %s", paam, err)
+			continue
 		}
 
 		if param.wantDiff && diff != nil && len(diff.text) > 0 {
@@ -77,6 +91,7 @@ func TestExecJsonnetFmt(t *testing.T) {
 	defer teardown()
 
 	jsonnetFile := testutil.CreateJsonnet(t, tempDir, "valid.jsonnet", testutil.ValidJsonnetBody)
+	malformedjsonnetFile := testutil.CreateJsonnet(t, tempDir, "malformed.jsonnet", testutil.MalformedJsonnetBody)
 	invalidJsonnetFile := testutil.CreateJsonnet(t, tempDir, "invalid.jsonnet", testutil.InvalidJsonnetBody)
 
 	params := []struct {
@@ -90,9 +105,21 @@ func TestExecJsonnetFmt(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			f:       testutil.CreateJsonnet(t, tempDir, "malformed.jsonnet", testutil.MalformedJsonnetBody),
-			opts:    []string{"--test"},
-			wantErr: &FmtError{},
+			f:    malformedjsonnetFile,
+			opts: []string{"--test"},
+			wantErr: &FmtError{
+				exitCode: 2,
+				diff: &FileDiff{
+					text: `...
+						metadata: {
+							name: name,
+							namespace: namespace,  // missing the trailing comma
+						},
+					}`,
+					numInsert: 1,
+					numDelete: 0,
+				},
+			},
 		},
 		{
 			f:       testutil.CreateJsonnet(t, tempDir, "in-place.jsonnet", testutil.MalformedJsonnetBody),
@@ -102,23 +129,43 @@ func TestExecJsonnetFmt(t *testing.T) {
 		{
 			f:       invalidJsonnetFile,
 			opts:    []string{"--test"},
-			wantErr: &FmtError{},
+			wantErr: &FmtError{exitCode: 1, diff: nil},
 		},
 	}
 
 	for _, param := range params {
 		err := execJsonnetFmt(param.f, param.opts)
+		baseInfo := fmt.Sprintf("params=(%q, %q)", param.f, param.opts)
 
 		if param.wantErr == nil {
 			if err == nil {
 				continue
 			}
 
-			t.Errorf("args='%q %q', want=%v, got=%v", param.f, param.opts, param.wantErr, err)
+			t.Errorf("%s, want=%v, got=%v", baseInfo, param.wantErr, err)
+			continue
 		}
 
-		if !errors.As(err, &param.wantErr) {
-			t.Errorf("args='%q %q', want=%v, got=%v", param.f, param.opts, param.wantErr, err)
+		var want, got *FmtError
+
+		if !errors.As(param.wantErr, &want) {
+			t.Errorf("unexpected error: %s, want=%v", baseInfo, param.wantErr)
+			continue
+		}
+		if !errors.As(err, &got) {
+			t.Errorf("unexpected error: %s, got=%v", baseInfo, err)
+		}
+		if got.exitCode != want.exitCode {
+			t.Errorf("%s, want=%v, got=%v", baseInfo, want.exitCode, got.exitCode)
+		}
+		if got.diff == nil && want.diff == nil {
+			continue
+		}
+
+		gotDiff := normalizeDiff(got.diff.text)
+		wantDiff := normalizeDiff(want.diff.text)
+		if normalizeDiff(got.diff.text) != normalizeDiff(want.diff.text) {
+			t.Errorf("%s, want=%v, got=%v", baseInfo, wantDiff, gotDiff)
 		}
 	}
 }
