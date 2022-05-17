@@ -167,7 +167,7 @@ func diffJsonnetFmt(f string) (*FileDiff, error) {
 	}
 
 	dmp := diffmatchpatch.New()
-	diffs := dmp.DiffMain(after, before, false)
+	diffs := dmp.DiffMain(before, after, false)
 
 	return summarizeDiff(diffs), err
 }
