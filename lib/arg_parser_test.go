@@ -101,10 +101,10 @@ func TestParseArgs(t *testing.T) {
 		opts, files := ParseArgs(param.args)
 
 		if slices.Compare(opts, param.wantOpts) != 0 {
-			t.Errorf("args='%q', want=%q, got=%q", param.args, param.wantOpts, opts)
+			t.Errorf("args='%q', wantOpts=%q, gotOpts=%q", param.args, param.wantOpts, opts)
 		}
 		if slices.Compare(files, param.wantFiles) != 0 {
-			t.Errorf("args='%q', want=%q, got=%q", param.args, param.wantFiles, files)
+			t.Errorf("args='%q', wantFiles=%q, gotFiles=%q", param.args, param.wantFiles, files)
 		}
 	}
 }
