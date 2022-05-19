@@ -1,7 +1,7 @@
 PRE_COMMIT := pre-commit
 
 JSONNET_VERSION := v0.18.0
-GOLANGCI_VERSION := v1.46.1
+GOLANGCI_VERSION := v1.46.2
 
 .PHONY: fmt
 fmt:
