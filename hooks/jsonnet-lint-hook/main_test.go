@@ -7,7 +7,7 @@ import (
 
 	"path/filepath"
 
-	"github.com/cybozu-private/pre-commit-jsonnet/testutil"
+	"github.com/cybozu/pre-commit-jsonnet/testutil"
 )
 
 func TestExecJsonnetLint(t *testing.T) {

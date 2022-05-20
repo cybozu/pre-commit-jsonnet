@@ -1,4 +1,4 @@
-module github.com/cybozu-private/pre-commit-jsonnet
+module github.com/cybozu/pre-commit-jsonnet
 
 go 1.18
 

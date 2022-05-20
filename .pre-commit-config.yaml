@@ -1,5 +1,5 @@
 repos:
-    - repo: https://github.com/cybozu-private/pre-commit-jsonnet
+    - repo: https://github.com/cybozu/pre-commit-jsonnet
       rev: HEAD
       hooks:
           - id: jsonnet-fmt

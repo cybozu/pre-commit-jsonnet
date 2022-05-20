@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cybozu-private/pre-commit-jsonnet/testutil"
+	"github.com/cybozu/pre-commit-jsonnet/testutil"
 )
 
 var reAnsiEscape = regexp.MustCompile(`(?:\x1B[@-Z\\-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])`)

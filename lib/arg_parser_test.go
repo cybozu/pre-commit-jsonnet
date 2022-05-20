@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/exp/slices"
 
-	"github.com/cybozu-private/pre-commit-jsonnet/testutil"
+	"github.com/cybozu/pre-commit-jsonnet/testutil"
 )
 
 const (

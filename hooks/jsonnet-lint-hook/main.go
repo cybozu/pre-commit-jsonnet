@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/sys/execabs"
 
-	"github.com/cybozu-private/pre-commit-jsonnet/lib"
+	"github.com/cybozu/pre-commit-jsonnet/lib"
 )
 
 const jsonnetLintCmd = "jsonnet-lint"
