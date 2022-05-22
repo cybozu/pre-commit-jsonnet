@@ -6,8 +6,7 @@
 
 ## Usage
 
-### Configurations
-Add this to your `.pre-commit-config.yaml`:
+Add the following to your `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
@@ -15,7 +14,7 @@ repos:
       rev: v0.2.0
       hooks:
           - id: jsonnet-fmt
-            args: ["--test"]  # you can use arbitrary options of jsonnetfmt command
+            args: ["--test"]  # you can specify any options of jsonnetfmt command
           - id: jsonnet-lint
-            args: ["--jpath", "lib/"]  # you can use arbitrary options of jsonnet-lint command
+            args: []  # you can specify any options of jsonnet-lint command
 ```
