@@ -15,7 +15,7 @@ var (
     kind: 'SubNamespace',
     metadata: {
       name: name,
-      namespace: namespace  // missing the trailing comma
+      namespace: namespace
     },
   }
 `)

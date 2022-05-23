@@ -16,8 +16,9 @@ func normalizeDiff(diff string) string {
 	reSpaces := regexp.MustCompile(`\s+`)
 
 	normDiff := strings.TrimSpace(diff)
-	normDiff = reSpaces.ReplaceAllString(normDiff, " ")
+	normDiff = strings.ReplaceAll(diff, "\n", " ")
 	normDiff = reAnsiEscape.ReplaceAllString(normDiff, "")
+	normDiff = reSpaces.ReplaceAllString(normDiff, " ")
 	return strings.ToLower(normDiff)
 }
 
@@ -36,6 +37,10 @@ func TestHasTestOpt(t *testing.T) {
 		},
 		{
 			opts: []string{"test", "hoge"},
+			want: false,
+		},
+		{
+			opts: []string{"-t"},
 			want: false,
 		},
 	}
@@ -116,9 +121,10 @@ func TestExecJsonnetFmt(t *testing.T) {
 					text: `...
 						metadata: {
 							name: name,
-							namespace: namespace,  // missing the trailing comma
+							namespace: namespace,
 						},
-					}`,
+					}
+					... `,
 					numInsert: 1,
 					numDelete: 0,
 				},
