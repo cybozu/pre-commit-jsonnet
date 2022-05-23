@@ -16,7 +16,7 @@ func normalizeDiff(diff string) string {
 	reSpaces := regexp.MustCompile(`\s+`)
 
 	normDiff := strings.TrimSpace(diff)
-	normDiff = strings.ReplaceAll(diff, "\n", " ")
+	normDiff = strings.ReplaceAll(normDiff, "\n", " ")
 	normDiff = reAnsiEscape.ReplaceAllString(normDiff, "")
 	normDiff = reSpaces.ReplaceAllString(normDiff, " ")
 	return strings.ToLower(normDiff)
