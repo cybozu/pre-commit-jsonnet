@@ -76,7 +76,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 		}
 	}
 	splitLines := func(text string) []string {
-		return strings.Split(strings.TrimSpace(strings.ReplaceAll(text, "\r\n", "\n")), "\n")
+		return strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	}
 
 	const maxShowLine = 3
