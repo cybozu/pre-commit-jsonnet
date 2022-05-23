@@ -164,7 +164,7 @@ func TestExecJsonnetFmt(t *testing.T) {
 
 		gotDiff := normalizeDiff(got.diff.text)
 		wantDiff := normalizeDiff(want.diff.text)
-		if normalizeDiff(got.diff.text) != normalizeDiff(want.diff.text) {
+		if gotDiff != wantDiff {
 			t.Errorf("%s, want=%v, got=%v", baseInfo, wantDiff, gotDiff)
 		}
 	}
