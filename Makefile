@@ -12,7 +12,7 @@ fmt:
 
 .PHONY: lint
 lint:
-	@golangci-lint run ./...
+	@golangci-lint run -v ./...
 
 .PHONY: test
 test:

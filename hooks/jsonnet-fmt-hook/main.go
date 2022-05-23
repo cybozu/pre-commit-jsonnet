@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 
 	"io/ioutil"
@@ -76,12 +77,13 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 		}
 	}
 	splitLines := func(text string) []string {
-		return strings.Split(strings.TrimSpace(strings.ReplaceAll(text, "\r\n", "\n")), "\n")
+		return strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	}
 
 	const maxShowLine = 3
 	const omissionText = "...\n"
 	lastDiffIdx := len(diffs) - 1
+	spaceRegexp := regexp.MustCompile(`\s`)
 
 	for i, diff := range diffs {
 		text := diff.Text
@@ -92,7 +94,7 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 			writeString(&builder, ansiGreen+text+ansiReset)
 			fileDiff.numInsert += len(text)
 		case diffmatchpatch.DiffDelete:
-			writeString(&builder, ansiRed+text+ansiReset)
+			writeString(&builder, ansiRed+regexp.QuoteMeta(spaceRegexp.ReplaceAllString(text, "␣"))+ansiReset)
 			fileDiff.numDelete += len(text)
 		case diffmatchpatch.DiffEqual:
 			var showHead, showTail bool
