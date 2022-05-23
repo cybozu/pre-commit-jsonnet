@@ -5,4 +5,4 @@ repos:
           - id: jsonnet-fmt
             args: ["--test"]
           - id: jsonnet-lint
-            args: ["--jpath", "lib/"]
+            args: []
