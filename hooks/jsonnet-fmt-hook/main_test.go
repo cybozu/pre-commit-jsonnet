@@ -95,16 +95,19 @@ func TestExecJsonnetFmt(t *testing.T) {
 	invalidJsonnetFile := testutil.CreateJsonnet(t, tempDir, "invalid.jsonnet", testutil.InvalidJsonnetBody)
 
 	params := []struct {
+		name    string
 		f       string
 		opts    []string
 		wantErr error
 	}{
 		{
+			name:    "normal case",
 			f:       jsonnetFile,
 			opts:    nil,
 			wantErr: nil,
 		},
 		{
+			name: "missing a trailing comma should be fixed",
 			f:    malformedjsonnetFile,
 			opts: []string{"--test"},
 			wantErr: &FmtError{
@@ -122,11 +125,13 @@ func TestExecJsonnetFmt(t *testing.T) {
 			},
 		},
 		{
+			name:    "execute with -i option",
 			f:       testutil.CreateJsonnet(t, tempDir, "in-place.jsonnet", testutil.MalformedJsonnetBody),
 			opts:    []string{"-i"},
 			wantErr: nil,
 		},
 		{
+			name:    "should be failed to check when passing an invalid jsonnet file",
 			f:       invalidJsonnetFile,
 			opts:    []string{"--test"},
 			wantErr: &FmtError{exitCode: 1, diff: nil},
@@ -135,7 +140,7 @@ func TestExecJsonnetFmt(t *testing.T) {
 
 	for _, param := range params {
 		err := execJsonnetFmt(param.f, param.opts)
-		baseInfo := fmt.Sprintf("params=(%q, %q)", param.f, param.opts)
+		baseInfo := fmt.Sprintf("name=%q, params=(%q, %q)", param.name, param.f, param.opts)
 
 		if param.wantErr == nil {
 			if err == nil {
