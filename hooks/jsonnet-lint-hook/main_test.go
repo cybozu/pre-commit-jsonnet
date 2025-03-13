@@ -52,7 +52,8 @@ func TestExecJsonnetLint(t *testing.T) {
 			continue
 		}
 
-		if !errors.As(err, &param.wantErr) {
+		var lintErr *LintError
+		if !errors.As(err, &lintErr) {
 			t.Errorf("args='%q %q', want=%q, got=%q", param.f, param.opts, param.wantErr, err)
 		}
 	}

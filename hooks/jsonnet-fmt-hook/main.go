@@ -8,8 +8,6 @@ import (
 	"regexp"
 	"strings"
 
-	"io/ioutil"
-
 	"golang.org/x/sys/execabs"
 
 	"github.com/cybozu/pre-commit-jsonnet/lib"
@@ -157,7 +155,7 @@ func diffJsonnetFmt(f string) (*FileDiff, error) {
 		return nil, fmtError
 	}
 
-	b, err := ioutil.ReadFile(f)
+	b, err := os.ReadFile(f)
 	if err != nil {
 		return nil, err
 	}
