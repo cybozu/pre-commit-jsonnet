@@ -11,7 +11,7 @@ var (
 	InvalidJsonnetBody   = []byte("{,}\n")
 	MalformedJsonnetBody = []byte(`function(name, namespace)
   {
-    apiVersion: 'accurate.cybozu.com/v1',
+    apiVersion: 'accurate.cybozu.com/v2',
     kind: 'SubNamespace',
     metadata: {
       name: name,
