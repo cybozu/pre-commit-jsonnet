@@ -99,11 +99,12 @@ func summarizeDiff(diffs []diffmatchpatch.Diff) *FileDiff {
 			endWithLineBreak = text[len(text)-1:] == "\n"
 			writeLineCount := min(maxShowLine, len(lines))
 
-			if i == 0 {
+			switch i {
+			case 0:
 				showTail = true
-			} else if i == lastDiffIdx {
+			case lastDiffIdx:
 				showHead = true
-			} else {
+			default:
 				showTail = true
 				showHead = true
 			}
