@@ -1,10 +1,10 @@
 GIT := git
 PRE_COMMIT := pre-commit
 
-JSONNET_VERSION := v0.21.0
-GOLANGCI_VERSION := v2.8.0
+JSONNET_VERSION := v0.22.0
+GOLANGCI_VERSION := v2.11.4
 
-VERSION := v0.3.1
+VERSION := v0.3.2
 
 .PHONY: fmt
 fmt:
