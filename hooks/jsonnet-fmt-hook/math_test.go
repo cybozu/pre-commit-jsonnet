@@ -26,7 +26,7 @@ func TestMin(t *testing.T) {
 	for _, param := range params {
 		got := min(param.values[0], param.values[1])
 		if got != param.want {
-			t.Errorf("args='%q', want=%v, got=%v", param.values, param.want, got)
+			t.Errorf("args=%v, want=%v, got=%v", param.values, param.want, got)
 		}
 	}
 }
