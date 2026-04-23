@@ -31,7 +31,7 @@ release:
 
 .PHONY: setup
 setup:
-	@GOSUMDB=sum.golang.org go install github.com/google/go-jsonnet/cmd/jsonnet-lint@$(JSONNET_VERSION)
-	@GOSUMDB=sum.golang.org go install github.com/google/go-jsonnet/cmd/jsonnetfmt@$(JSONNET_VERSION)
+	go install github.com/google/go-jsonnet/cmd/jsonnet-lint@$(JSONNET_VERSION)
+	go install github.com/google/go-jsonnet/cmd/jsonnetfmt@$(JSONNET_VERSION)
 
-	@GOSUMDB=sum.golang.org go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_VERSION)
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_VERSION)
