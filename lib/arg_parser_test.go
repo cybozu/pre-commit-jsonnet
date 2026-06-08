@@ -5,14 +5,26 @@ import (
 	"path/filepath"
 	"testing"
 
-	"golang.org/x/exp/slices"
-
 	"github.com/cybozu/pre-commit-jsonnet/testutil"
 )
 
 const (
 	existFile = "arg_parser.go"
 )
+
+func equalStringSlices(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
 
 func TestInferOpt(t *testing.T) {
 	params := []struct {
@@ -100,11 +112,11 @@ func TestParseArgs(t *testing.T) {
 	for _, param := range params {
 		opts, files := ParseArgs(param.args)
 
-		if slices.Compare(opts, param.wantOpts) != 0 {
+		if !equalStringSlices(opts, param.wantOpts) {
 			t.Errorf("args='%q', wantOpts=%q, gotOpts=%q", param.args, param.wantOpts, opts)
 			continue
 		}
-		if slices.Compare(files, param.wantFiles) != 0 {
+		if !equalStringSlices(files, param.wantFiles) {
 			t.Errorf("args='%q', wantFiles=%q, gotFiles=%q", param.args, param.wantFiles, files)
 		}
 	}
