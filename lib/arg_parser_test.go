@@ -3,6 +3,7 @@ package lib
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 
 	"github.com/cybozu/pre-commit-jsonnet/testutil"
@@ -11,20 +12,6 @@ import (
 const (
 	existFile = "arg_parser.go"
 )
-
-func equalStringSlices(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-
-	return true
-}
 
 func TestInferOpt(t *testing.T) {
 	params := []struct {
@@ -112,11 +99,11 @@ func TestParseArgs(t *testing.T) {
 	for _, param := range params {
 		opts, files := ParseArgs(param.args)
 
-		if !equalStringSlices(opts, param.wantOpts) {
+		if !slices.Equal(opts, param.wantOpts) {
 			t.Errorf("args='%q', wantOpts=%q, gotOpts=%q", param.args, param.wantOpts, opts)
 			continue
 		}
-		if !equalStringSlices(files, param.wantFiles) {
+		if !slices.Equal(files, param.wantFiles) {
 			t.Errorf("args='%q', wantFiles=%q, gotFiles=%q", param.args, param.wantFiles, files)
 		}
 	}
