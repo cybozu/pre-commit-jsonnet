@@ -18,3 +18,11 @@ repos:
           - id: jsonnet-lint
             args: []  # you can specify any options of jsonnet-lint command
 ```
+
+### Update pinned GitHub Actions
+
+This repository uses [pinact](https://github.com/suzuki-shunsuke/pinact) to update and verify pinned GitHub Actions.
+
+```shell
+GITHUB_TOKEN="$(gh auth token)" pinact run --update --min-age 14
+```

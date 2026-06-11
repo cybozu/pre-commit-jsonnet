@@ -1,10 +1,7 @@
 GIT := git
 PRE_COMMIT := pre-commit
 
-JSONNET_VERSION := v0.22.0
-GOLANGCI_VERSION := v2.11.4
-
-VERSION := v0.3.2
+VERSION := v0.3.3
 
 .PHONY: fmt
 fmt:
@@ -31,7 +28,4 @@ release:
 
 .PHONY: setup
 setup:
-	go install github.com/google/go-jsonnet/cmd/jsonnet-lint@$(JSONNET_VERSION)
-	go install github.com/google/go-jsonnet/cmd/jsonnetfmt@$(JSONNET_VERSION)
-
-	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_VERSION)
+	go install tool

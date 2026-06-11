@@ -3,9 +3,8 @@ package lib
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/cybozu/pre-commit-jsonnet/testutil"
 )
@@ -100,11 +99,11 @@ func TestParseArgs(t *testing.T) {
 	for _, param := range params {
 		opts, files := ParseArgs(param.args)
 
-		if slices.Compare(opts, param.wantOpts) != 0 {
+		if !slices.Equal(opts, param.wantOpts) {
 			t.Errorf("args='%q', wantOpts=%q, gotOpts=%q", param.args, param.wantOpts, opts)
 			continue
 		}
-		if slices.Compare(files, param.wantFiles) != 0 {
+		if !slices.Equal(files, param.wantFiles) {
 			t.Errorf("args='%q', wantFiles=%q, gotFiles=%q", param.args, param.wantFiles, files)
 		}
 	}
